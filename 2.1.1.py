@@ -186,7 +186,7 @@ def csv_reader(file_name):
     return list_data[1:]
 
 file_name = input("Введите название файла: ")
-job = input("Введите название профессии: ")
+job = input("Введите название профессии)): ")
 file = open(file_name, encoding="utf_8_sig")
 data = csv_reader(file_name)
 
