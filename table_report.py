@@ -7,6 +7,10 @@ import os
 import sys
 
 def csv_reader(file_name):
+    ''' Получает данные о файле и считывает его, проверяет, чтобы файл не был пустым, возвращает вакансии и названия полей
+
+    file_name(str): название файла
+    '''
     if os.stat(file_name).st_size == 0:
         print("Пустой файл")
         exit()
@@ -18,6 +22,10 @@ def csv_reader(file_name):
         return columns, vac
 
 def cleaning(vac):
+    ''' Очищает вакансии от html тегов
+
+    vac(str): поле вакансии
+    '''
     vac = re.sub('<.*?>', '', vac)
     vac = vac.replace('\r\n', ' ')
     vac = vac.replace(u'\xa0', ' ')
@@ -27,6 +35,12 @@ def cleaning(vac):
     return vac
 
 def csv_filter(reader, list_naming):
+    ''' Очищает вакансии, возвращает массив словарей
+
+    reader(array):  лист с названиями полей
+    list_naming(array): массив массивов с вакансиями
+    '''
+
     vacancies = []
     for vac in list_naming:
         for i in range(len(vac)):
@@ -36,6 +50,12 @@ def csv_filter(reader, list_naming):
     return vacancies
 
 def bool(value, action1, action2):
+    ''' Заменяет поля с булевыми значениями на новые
+
+    value(str):  значение поля, которое нужно перевести
+    action1, action2(str): значения, на которые нужно заменить true или false
+    '''
+
     if value.lower() == 'true':
         value = action1
     if value.lower() == 'false':
@@ -43,10 +63,21 @@ def bool(value, action1, action2):
     return value
 
 def salary(f):
+    ''' Переводит зарплату в формат с пробелом
+
+    f(str):  зарплата
+    '''
+
     f = int(float(f))
     return '{0:,}'.format(f).replace(',', ' ')
 
 def formatter(row, rus_names):
+    ''' Форматирует все вакансии, переводит нужные поля, зарплату объединяет в одно поле, дату переводит в нужный формат
+
+    row(dict): вакансия с английскими названиями полей
+    rus_names(dict): русские названия полей
+    '''
+
     row['premium'] = bool(row['premium'], 'Да', 'Нет')
     row['salary_currency'] = rus_names[row['salary_currency']]
     row['experience_id'] = rus_names[row['experience_id']]
@@ -60,6 +91,12 @@ def formatter(row, rus_names):
     return row
 
 def rus(data_vacancies, dic_naming):
+    ''' Переводит все поля на русский, возвращает массив словарей
+
+    data_vacancies(array): массив со словарями вакансий
+    dic_naming(dict): русские названия полей
+    '''
+
     rus_vac=[]
     for o in range(len(data_vacancies)):
         data = {}
@@ -68,11 +105,14 @@ def rus(data_vacancies, dic_naming):
         rus_vac.append(data)
     return rus_vac
 
-def to_replace(numb, str1, str2):
-    numb = numb.replace(str1, str2)
-    return numb
 
 def division_numbers(str,filter):
+    ''' Возвращает номера строк,которые нужны будут для вывода
+
+    str(array): строка с числами для  вывода строк
+    filter(str): отфильтрованные вакансии
+    '''
+
     if len(str) == 0:
         return 1, len(filter)
     if str.find(' '):
@@ -84,18 +124,13 @@ def division_numbers(str,filter):
     else:
         return int(str), len(filter)
 
-def filter_table(index, f, vac, filter_str, table):
-    c = 0
-    for i in range(len(vac) - 1, -1, -1):
-        if filter_str[1] != index[i][f]:
-            table.del_row(i)
-            c += 1
-    if c == len(vac):
-        print('Ничего не найдено')
-        sys.exit()
-    return table
-
 def fil_prem(fil_vac: list, fil_value):
+    ''' Фильтрует вакансии, если параметр фильрации премиум-вакансия
+
+    fil_vac(list): массив вакансий
+    fil_value(str): значение для фильтрации
+    '''
+
     dic_translator = {
         'Да': 'True',
         'Нет': 'False'
@@ -104,6 +139,11 @@ def fil_prem(fil_vac: list, fil_value):
 
 
 def column_output(str):
+    ''' Отбирает нужные колонки таблицы для вывода по введенному параметру, если строка пустая, возвращает все колонки
+
+    str(str): названия нужных колонок
+    '''
+
     if len(str) == 0:
         return ["№", "Название", "Описание", "Навыки", "Опыт работы", "Премиум-вакансия", "Компания", "Оклад",
                 "Название региона", "Дата публикации вакансии"]
@@ -113,6 +153,13 @@ def column_output(str):
         return str
 
 def filtrate(string, vacancies, filter_dict):
+    ''' Возвращает отфильтрованные вакансии
+
+    string(str): строка с параметром фильтрации
+    vacancies(array): все вакансии
+    filter_dict(dict): словарь с функциями для фильтрации
+    '''
+
     s = 0
     if string == '':
         return vacancies
@@ -133,6 +180,8 @@ def filtrate(string, vacancies, filter_dict):
     return results
 
 def get_table():
+    ''' Создает и выводит таблицу, фильтрует нужные вакансии по параметру'''
+
     rus_names = {'name': 'Название',
                  'description': 'Описание',
                  'key_skills': 'Навыки',
@@ -183,7 +232,7 @@ def get_table():
                                                                    if
                                                                    rus_names[vacancy['salary_currency']] == fil_value]
     }
-
+    ''' Создание таблицы, получает данные от пользователя'''
 
     table = prettytable.PrettyTable(hrules=ALL)
     names_table = []
