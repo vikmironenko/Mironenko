@@ -18,4 +18,4 @@
 
 Частота, с которой всречаются различные валюты
 
-![image](https://user-images.githubusercontent.com/94804678/208762772-bdbf6ca2-d2c2-44af-9eb7-b8856a7f48d4.png)
+![image](https://user-images.githubusercontent.com/94804678/208763140-72661074-28dd-4404-8ab0-cbd48d092259.png)
