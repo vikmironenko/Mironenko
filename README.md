@@ -13,3 +13,9 @@
 Скриншот работы программы с применением мultiprocessing для 3.2.2
 
 <img width="902" alt="сн 1" src="https://user-images.githubusercontent.com/94804678/206757311-c19a4b33-f8cb-48d3-bdbd-992035d6f099.png">
+
+3.3.1
+
+Частота, с которой всречаются различные валюты
+
+![image](https://user-images.githubusercontent.com/94804678/208761071-b1205b0b-6dcd-4dd3-b496-d2c2d4d6824f.png)
