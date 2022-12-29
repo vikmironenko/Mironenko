@@ -3,6 +3,11 @@ import pdfkit
 from jinja2 import Environment, FileSystemLoader
 
 def statistics(file, job):
+    '''Формирует статистику для pdf файла
+    
+    file - название файла
+    job - название профессии
+    '''
     data = pd.read_csv(file, encoding='utf-8-sig').dropna()\
             .assign(salary=lambda x: x['salary'].astype('int64'),
                     area_name=lambda x: x['area_name'].astype('category'))\
@@ -22,12 +27,14 @@ def statistics(file, job):
         dict[i][header[3]] = c[i]
         dict[i][header[4]] = selected_c[i]
 
+    '''формируется pdf-файл из html файла'''
     env = Environment(loader=FileSystemLoader('.'))
     temp = env.get_template("pdf_template.html")
     pdf_temp = temp.render({'header': header, 'd': dict})
     config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
-    pdfkit.from_string(pdf_temp, '3.4.2.pdf', configuration=config)
+    pdfkit.from_string(pdf_temp, 'new_pdf.pdf', configuration=config)
 
+    '''вывод данных'''
     print('Динамика уровня зарплат по годам:', salary)
     print('Динамика уровня зарплат по годам для выбранной профессии:', selected_salary)
     print('Динамика количества вакансий по годам:', c)
